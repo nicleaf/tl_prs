@@ -2,7 +2,12 @@
 
 require 'pry'
 
+def is_player_win(player,computer)
+  (player == "p" && computer == "r") || (player == "r" && computer == "s") || (player == "s" && computer == "p")
+end
+
 def display_result(who, choice)
+  puts "-------------------"
   puts "#{who} won!"
   if choice == 'PAPER'
     puts "#{choice} wrapped ROCK!"
@@ -11,40 +16,32 @@ def display_result(who, choice)
   else
     puts "#{choice} cut PAPER!"
   end
+  puts "-------------------"
 end
 
 puts "Welcome to Paper - Rock - Scissor game!"
+puts "Start game!"
 hsh = {"p" => "PAPER", "r" => "ROCK", "s" => "SCISSOR"}
  
 loop do
-  puts "Start? (y/n)"
-  answer = gets.chomp
-  if answer.downcase == 'y'
-    begin
-      puts "Choose p/r/s"
-      player_choice = gets.chomp.downcase
-    end until (player_choice == 'p') || (player_choice == 'r') || (player_choice == 's')
-    computer_choice = hsh.keys.sample
+  begin
+    puts "Choose p/r/s"
+    player_choice = gets.chomp.downcase
+  end until (player_choice == 'p') || (player_choice == 'r') || (player_choice == 's')
+  computer_choice = hsh.keys.sample
     
-    if player_choice == computer_choice
-      puts "Tie!"
-    elsif (player_choice == "p" && computer_choice == "r") || (player_choice == "r" && computer_choice == "s") || (player_choice == "s" && computer_choice == "p")
-      display_result("You", hsh[player_choice])
-    else
-      display_result("Computer", hsh[computer_choice])
-    end
-    
-    puts "Replay again? (y/n)"
-    replay_choice = gets.chomp
-    if replay_choice == 'y'
-      next
-    elsif replay_choice == 'n'
-      break
-    end
-  elsif answer.downcase == 'n'
-    break
+  if player_choice == computer_choice
+    puts "-------------------"
+    puts "Tie!"
+    puts "-------------------"
+  elsif is_player_win(player_choice,computer_choice)
+    display_result("You", hsh[player_choice])
+  else
+    display_result("Computer", hsh[computer_choice])
   end
-  puts "Replay again? (y/n)"
-  replay_choice = get.chomp
+
+  puts "Type 'y' to replay again."
+  break if gets.chomp.downcase != 'y'
 end
+
 puts "Tata!"
