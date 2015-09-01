@@ -1,17 +1,9 @@
-# noun: game, player, hand
+# noun: game, player
 # verb: choose, compare, 
 
+require 'pry'
+
 class Hand
-  #compare
-end
-
-class Player < Hand
-  attr_accessor :name, :choice
-
-  def initialize(name)
-    @name = name
-  end
-  #choose
   def choose_hand
     begin
       puts "Choose p/r/s"
@@ -23,11 +15,14 @@ class Player < Hand
   def choose_hand_auto
     self.choice = Game::CHOICES.keys.sample    
   end
+end
 
-  def to_s
-    "#{name} choose #{choice}"
+class Player < Hand
+  attr_accessor :name, :choice
+
+  def initialize(name)
+    @name = name
   end
-
 end
 
 class Game
@@ -36,7 +31,7 @@ class Game
   attr_reader :player, :computer
 
   def initialize
-    puts "Enter your name?"
+    puts "Enter your name: "
     player_name = gets.chomp
     @player = Player.new(player_name)
     @computer = Player.new("Chris_aka_bot")
