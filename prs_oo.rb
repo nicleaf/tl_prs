@@ -1,20 +1,6 @@
 # noun: game, player
 # verb: choose, compare, 
 
-#class Hand
-#  def choose_hand
-#    begin
-#      puts "Choose p/r/s"
-#      player_choice = gets.chomp.downcase
-#    end until (player_choice == 'p') || (player_choice == 'r') || (player_choice == 's')
-#    self.choice = player_choice
-#  end
-
-#  def choose_hand_auto
-#    self.choice = Game::CHOICES.keys.sample    
-#  end
-#end
-
 class Player
   attr_accessor :choice
   attr_reader :name
