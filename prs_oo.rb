@@ -1,27 +1,46 @@
 # noun: game, player
 # verb: choose, compare, 
 
-require 'pry'
+#class Hand
+#  def choose_hand
+#    begin
+#      puts "Choose p/r/s"
+#      player_choice = gets.chomp.downcase
+#    end until (player_choice == 'p') || (player_choice == 'r') || (player_choice == 's')
+#    self.choice = player_choice
+#  end
 
-class Hand
+#  def choose_hand_auto
+#    self.choice = Game::CHOICES.keys.sample    
+#  end
+#end
+
+class Player
+  attr_accessor :choice
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+class Human < Player
   def choose_hand
     begin
       puts "Choose p/r/s"
       player_choice = gets.chomp.downcase
     end until (player_choice == 'p') || (player_choice == 'r') || (player_choice == 's')
-    self.choice = player_choice
-  end
-
-  def choose_hand_auto
-    self.choice = Game::CHOICES.keys.sample    
+    self.choice = Game::CHOICES[player_choice]
+    puts "-------------------"
+    puts "#{name} choose #{choice}"
   end
 end
 
-class Player < Hand
-  attr_accessor :name, :choice
-
-  def initialize(name)
-    @name = name
+class Computer < Player
+  def choose_hand
+    self.choice = Game::CHOICES.keys.sample    
+    puts "-------------------"
+    puts "#{name} choose #{Game::CHOICES[choice]}"
   end
 end
 
@@ -31,16 +50,17 @@ class Game
   attr_reader :player, :computer
 
   def initialize
+    display_welcome_start_game_message
     puts "Enter your name: "
     player_name = gets.chomp
-    @player = Player.new(player_name)
-    @computer = Player.new("Chris_aka_bot")
+    @player = Human.new(player_name)
+    @computer = Computer.new("Chris_aka_bot")
   end
 
   def play
     loop do
       player.choose_hand
-      computer.choose_hand_auto
+      computer.choose_hand
       compare_hand
       puts "Type 'y' to replay again."
       break if gets.chomp.downcase != 'y'
@@ -60,21 +80,20 @@ class Game
     end      
   end
 
-  def display_result(str)
-    puts "-------------------"
-    if str == "Tie"
-      puts "#{player.name}, too bad, it's a #{str}!!!"
+  def display_result(name)
+    puts "\n----- RESULT ------"
+    if name == "Tie"
+      puts "#{player.name}, too bad, it's a #{name}!!!"
     else
-      puts "#{str} won!!!"
+      puts "#{name} won!!!"
     end
     puts "-------------------"
   end
 
-  def self.display_welcome_start_game_message
+  def display_welcome_start_game_message
     puts "Welcome to Paper - Rock - Scissor game!"
     puts "Start game!"
   end
 end
 
-Game.display_welcome_start_game_message
-game = Game.new.play
+Game.new.play
